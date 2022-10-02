@@ -15,7 +15,7 @@ const LeakSensorAccessory = require('./lib/leak_sensor_accessory')
 const PushAccessory = require("./lib/push_accessory");
 const MotionSensorAccessory = require('./lib/motionsensor_accessory')
 const ValveAccessory = require('./lib/valve_accessory')
-
+const TemperatureAndHumiditySensorAccessory = require('./lib/temperature_and_humidity_sensor_accessory');
 
 const LogUtil = require('./util/logutil')
 const DataUtil = require('./util/datautil');
@@ -215,6 +215,11 @@ class TuyaPlatform {
           deviceAccessory = new ValveAccessory(this, homebridgeAccessory, device, deviceData);
         else
           deviceAccessory = new SwitchAccessory(this, homebridgeAccessory, device, deviceData);
+        this.accessories.set(uuid, deviceAccessory.homebridgeAccessory);
+        this.deviceAccessories.set(uuid, deviceAccessory);
+        break;
+      case 'wsdcg':
+        deviceAccessory = new TemperatureAndHumiditySensorAccessory(this, homebridgeAccessory, device);
         this.accessories.set(uuid, deviceAccessory.homebridgeAccessory);
         this.deviceAccessories.set(uuid, deviceAccessory);
         break;
