@@ -23,6 +23,7 @@
     "axios": "^0.21.1",
     "chai": "^4.3.4",
     "crypto-js": "^4.0.0",
+    "homebridge": "^1.4.0",
     "js-base64": "^3.6.1",
     "mqtt": "^4.2.6",
     "string-cipher": "^1.0.8",
@@ -30,7 +31,7 @@
     "uuid": "^8.3.2"
   },
   "funding": {
-    "type" : "paypal",
-    "url" : "https://www.paypal.me/talrhv"
+    "type": "paypal",
+    "url": "https://www.paypal.me/talrhv"
   }
 }
