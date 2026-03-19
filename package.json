@@ -1,0 +1,38 @@
+{
+  "name": "homebridge-tuya-platform-talrhvfork",
+  "version": "2.0.0",
+  "description": "Official Homebridge plugin for Tuya Open API - talrhv fork, maintained by talrhv.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "homebridge -D -U ./config/",
+    "test": "node --test"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "tuya",
+    "homekit"
+  ],
+  "author": "huhuan",
+  "license": "MIT",
+  "homepage": "https://github.com/talrhv/tuya-homebridge",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talrhv/tuya-homebridge.git"
+  },
+  "engines": {
+    "node": "^18.20.4 || ^20.15.1 || ^22 || ^24",
+    "homebridge": "^1.6.0 || ^2.0.0-beta.0"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "mqtt": "^5.11.0"
+  },
+  "funding": {
+    "type": "paypal",
+    "url": "https://www.paypal.me/talrhv"
+  },
+  "devDependencies": {
+    "homebridge": "^1.11.2",
+    "homebridge-config-ui-x": "^5.19.0"
+  }
+}

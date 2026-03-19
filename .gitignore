@@ -1,7 +1,5 @@
 node_modules/
 config/accessories/
 config/persist/
-package-lock.json
 config/config.json
-package.json
 config/config.json
