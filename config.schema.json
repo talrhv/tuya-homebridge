@@ -1,210 +1,184 @@
 {
-	"pluginAlias": "TuyaPlatform",
-	"pluginType": "platform",
-	"singular": true,
-	"headerDisplay": "Official Tuya Homebridge plugin, supported by Tuya Developers.",
-	"footerDisplay": "",
-	"schema": {
-		"type": "object",
-		"properties": {
-			"name": {
-				"title": "Name",
-				"type": "string",
-				"required": true,
-				"default": "TuyaPlatform",
-				"description": "You shouldn't need to change this."
-			},
-			"options": {
-				"title": "",
-				"type": "object",
-				"required": true,
-				"properties": {
-					"username": {
-						"title": "Username",
-						"type": "string",
-						"required": true
-					},
-					"password": {
-						"title": "Password",
-						"type": "string",
-						"required": true
-					},
-					"accessId": {
-						"title": "Access ID",
-						"type": "string",
-						"required": true
-					},
-					"accessKey": {
-						"title": "Access Key",
-						"type": "string",
-						"required": true
-					},
-					"lang": {
-						"title": "Language Code",
-						"type": "string",
-						"default": "en",
-						"description": "Your two letter language code",
-						"required": true
-					},
-					"projectType": {
-						"title": "Project Type",
-						"type": "string",
-						"default": "form",
-						"oneOf": [
-							{
-								"title": "PaaS",
-								"enum": [
-									"2"
-								]
-							},
-							{
-								"title": "Custom",
-								"enum": [
-									"1"
-								]
-							}
-						],
-						"required": true
-					},
-					"appSchema": {
-						"title": "PaaS Platform",
-						"type": "string",
-						"default": "form",
-						"oneOf": [
-							{
-								"title": "Tuya Smart",
-								"enum": [
-									"tuyaSmart"
-								]
-							},
-							{
-								"title": "Smart Life",
-								"enum": [
-									"smartlife"
-								]
-							}
-						],
-						"required": true
-					},
-					"countryCode": {
-						"title": "Country Code",
-						"type": "number",
-						"default": "",
-						"description": "Your two integer country code",
-						"required": true
-					},
-					"valve": {
-						"title": "switch with timer",
-						"type": "array",
-						"description": "This feature let you use the switch as a valve accessory. it means that you can set countdown directly through the home app which is great for boiler switch the only issue is that valve accessories do not support automation, it can be set only through Tuya / SmartLife App.",
-						"items": {
-							"type": "object",
-							"properties": {
-								"deviceId": {
-									"title": "Device Id",
-									"type": "string"
-								},
-								"isActive": {
-									"title": "active",
-									"type": "boolean",
-									"default": true
-								}
-							}
-						}
-					},
-					"motion": {
-						"title": "Motion sensors",
-						"type": "array",
-						"description": "There are 2 types of motion sensors: one that goes from detection mode to idle in about 1-2 seconds (like an alarm motion sensor) and one that you can set the time between detection and idle manually through the Tuya / SmartLife app. this configuration let you change the first type of the motion sensors to custom detection time.",
-						"items": {
-							"type": "object",
-							"properties": {
-								"deviceId": {
-									"title": "Device Id",
-									"type": "string"
-								},
-								"overrideTuya": {
-									"title": "Enable time modification",
-									"type": "integer",
-									"description": "choose this if you want to override the original time settings. this will work only for the first type of motion sensors. choosing 0 will disable the time modification.",
-									"default": 0,
-									"oneOf": [
-										{
-											"title": "0",
-											"enum": [
-												0
-											]
-										},
-										{
-											"title": "15",
-											"enum": [
-												15
-											]
-										},
-										{
-											"title": "30",
-											"enum": [
-												30
-											]
-										},
-										{
-											"title": "45",
-											"enum": [
-												45
-											]
-										},
-										{
-											"title": "60",
-											"enum": [
-												60
-											]
-										},
-										{
-											"title": "75",
-											"enum": [
-												75
-											]
-										},
-										{
-											"title": "90",
-											"enum": [
-												90
-											]
-										},
-										{
-											"title": "105",
-											"enum": [
-												105
-											]
-										},
-										{
-											"title": "120",
-											"enum": [
-												120
-											]
-										}
-									]
-								}
-							}
-						}
-					},
-					"ignoreDevices": {
-						"title": "ignore specific devices by their device id.",
-						"description": "for those who wants to use other kind of tuya plugins and don't want to deal with double accessories.",
-						"type": "array",
-						"items": {
-							"title": "Device Id",
-							"type": "string"
-						}
-					},
-					"debug": {
-						"title": "Enable Debug Logging",
-						"type": "boolean",
-						"default": false,
-						"required": true
-					}
-				}
-			}
-		}
-	}
+  "pluginAlias": "TuyaPlatform",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Official Tuya Homebridge plugin, supported by Tuya Developers.",
+  "footerDisplay": "",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "default": "TuyaPlatform",
+        "description": "You shouldn't need to change this."
+      },
+      "options": {
+        "title": "",
+        "type": "object",
+        "required": true,
+        "properties": {
+          "username": {
+            "title": "Username",
+            "type": "string",
+            "required": true
+          },
+          "password": {
+            "title": "Password",
+            "type": "string",
+            "required": true
+          },
+          "accessId": {
+            "title": "Access ID",
+            "type": "string",
+            "required": true
+          },
+          "accessKey": {
+            "title": "Access Key",
+            "type": "string",
+            "required": true
+          },
+          "lang": {
+            "title": "Language Code",
+            "type": "string",
+            "default": "en",
+            "description": "Your two letter language code",
+            "required": true
+          },
+          "projectType": {
+            "title": "Project Type",
+            "type": "string",
+            "default": "form",
+            "oneOf": [
+              {
+                "title": "PaaS",
+                "enum": ["2"]
+              },
+              {
+                "title": "Custom",
+                "enum": ["1"]
+              }
+            ],
+            "required": true
+          },
+          "appSchema": {
+            "title": "PaaS Platform",
+            "type": "string",
+            "default": "form",
+            "oneOf": [
+              {
+                "title": "Tuya Smart",
+                "enum": ["tuyaSmart"]
+              },
+              {
+                "title": "Smart Life",
+                "enum": ["smartlife"]
+              }
+            ],
+            "required": true
+          },
+          "countryCode": {
+            "title": "Country Code",
+            "type": "number",
+            "default": "",
+            "description": "Your two integer country code",
+            "required": true
+          },
+          "valve": {
+            "title": "switch with timer",
+            "type": "array",
+            "description": "This feature let you use the switch as a valve accessory. it means that you can set countdown directly through the home app which is great for boiler switch the only issue is that valve accessories do not support automation, it can be set only through Tuya / SmartLife App.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "deviceId": {
+                  "title": "Device Id",
+                  "type": "string"
+                },
+                "isActive": {
+                  "title": "active",
+                  "type": "boolean",
+                  "default": true
+                }
+              }
+            }
+          },
+          "motion": {
+            "title": "Motion sensors",
+            "type": "array",
+            "description": "There are 2 types of motion sensors: one that goes from detection mode to idle in about 1-2 seconds (like an alarm motion sensor) and one that you can set the time between detection and idle manually through the Tuya / SmartLife app. this configuration let you change the first type of the motion sensors to custom detection time.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "deviceId": {
+                  "title": "Device Id",
+                  "type": "string"
+                },
+                "overrideTuya": {
+                  "title": "Enable time modification",
+                  "type": "integer",
+                  "description": "choose this if you want to override the original time settings. this will work only for the first type of motion sensors. choosing 0 will disable the time modification.",
+                  "default": 0,
+                  "oneOf": [
+                    {
+                      "title": "0",
+                      "enum": [0]
+                    },
+                    {
+                      "title": "15",
+                      "enum": [15]
+                    },
+                    {
+                      "title": "30",
+                      "enum": [30]
+                    },
+                    {
+                      "title": "45",
+                      "enum": [45]
+                    },
+                    {
+                      "title": "60",
+                      "enum": [60]
+                    },
+                    {
+                      "title": "75",
+                      "enum": [75]
+                    },
+                    {
+                      "title": "90",
+                      "enum": [90]
+                    },
+                    {
+                      "title": "105",
+                      "enum": [105]
+                    },
+                    {
+                      "title": "120",
+                      "enum": [120]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "ignoreDevices": {
+            "title": "ignore specific devices by their device id.",
+            "description": "for those who wants to use other kind of tuya plugins and don't want to deal with double accessories.",
+            "type": "array",
+            "items": {
+              "title": "Device Id",
+              "type": "string"
+            }
+          },
+          "debug": {
+            "title": "Enable Debug Logging",
+            "type": "boolean",
+            "default": false,
+            "required": true
+          }
+        }
+      }
+    }
+  }
 }

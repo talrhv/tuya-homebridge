@@ -4,5 +4,6 @@ config/persist/
 config/config.json
 package-lock.json
 .config
+config
 .homebridge-debug/persist/AccessoryInfo.CC223DE3CE30.json
 .homebridge-debug/persist/IdentifierCache.CC223DE3CE30.json
