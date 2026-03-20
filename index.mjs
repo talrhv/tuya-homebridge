@@ -1,8 +1,7 @@
 "use strict";
 
 import settings from "./src/settings.mjs";
-import platformModule from "./src/platform.mjs";
-
+import TuyaPlatform from "./src/platform.mjs";
 /**
  * Homebridge Plugin Initializer.
  *
@@ -13,6 +12,6 @@ export default (api) => {
   api.registerPlatform(
     settings.PLUGIN_NAME,
     settings.PLATFORM_NAME,
-    platformModule.TuyaPlatform,
+    TuyaPlatform,
   );
 };

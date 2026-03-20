@@ -2,5 +2,7 @@ node_modules/
 config/accessories/
 config/persist/
 config/config.json
-config/config.json
 package-lock.json
+.config
+.homebridge-debug/persist/AccessoryInfo.CC223DE3CE30.json
+.homebridge-debug/persist/IdentifierCache.CC223DE3CE30.json
