@@ -1,3 +1,8 @@
+Version 2.0.36
+
+- Full Homebridge 2.0 support (ESM).
+- Complete code rewrite.
+
 Version 1.59
 
 rewrite smart boiler \ timer switch to support double (and more) switches.
