@@ -1,28 +1,28 @@
 "use strict";
 
-const TuyaOpenAPI = require("../lib/tuyaopenapi");
-const TuyaSHOpenAPI = require("../lib/tuyashopenapi");
-const TuyaOpenMQ = require("../lib/tuyamqttapi");
+import TuyaOpenAPI from "../lib/tuyaopenapi.mjs";
+import TuyaSHOpenAPI from "../lib/tuyashopenapi.mjs";
+import TuyaOpenMQ from "../lib/tuyamqttapi.mjs";
 
-const OutletAccessory = require("../lib/outlet_accessory");
-const LightAccessory = require("../lib/light_accessory");
-const SwitchAccessory = require("../lib/switch_accessory");
-const SmokeSensorAccessory = require("../lib/smokesensor_accessory");
-const Fanv2Accessory = require("../lib/fanv2_accessory");
-const HeaterAccessory = require("../lib/heater_accessory");
-const GarageDoorAccessory = require("../lib/garagedoor_accessory");
-const AirPurifierAccessory = require("../lib/air_purifier_accessory");
-const WindowCoveringAccessory = require("../lib/window_covering_accessory");
-const ContactSensorAccessory = require("../lib/contactsensor_accessory");
-const LeakSensorAccessory = require("../lib/leak_sensor_accessory");
-const PushAccessory = require("../lib/push_accessory");
-const MotionSensorAccessory = require("../lib/motionsensor_accessory");
-const ValveAccessory = require("../lib/valve_accessory");
+import OutletAccessory from "../lib/outlet_accessory.mjs";
+import LightAccessory from "../lib/light_accessory.mjs";
+import SwitchAccessory from "../lib/switch_accessory.mjs";
+import SmokeSensorAccessory from "../lib/smokesensor_accessory.mjs";
+import Fanv2Accessory from "../lib/fanv2_accessory.mjs";
+import HeaterAccessory from "../lib/heater_accessory.mjs";
+import GarageDoorAccessory from "../lib/garagedoor_accessory.mjs";
+import AirPurifierAccessory from "../lib/air_purifier_accessory.mjs";
+import WindowCoveringAccessory from "../lib/window_covering_accessory.mjs";
+import ContactSensorAccessory from "../lib/contactsensor_accessory.mjs";
+import LeakSensorAccessory from "../lib/leak_sensor_accessory.mjs";
+import PushAccessory from "../lib/push_accessory.mjs";
+import MotionSensorAccessory from "../lib/motionsensor_accessory.mjs";
+import ValveAccessory from "../lib/valve_accessory.mjs";
 
-const LogUtil = require("../util/logutil");
-const DataUtil = require("../util/datautil");
+import LogUtil from "../util/logutil.mjs";
+import DataUtil from "../util/datautil.mjs";
 
-const { PLATFORM_NAME, PLUGIN_NAME } = require("./settings");
+import settings from "./settings.mjs";
 
 /**
  * Homebridge Dynamic Platform Plugin
@@ -390,9 +390,11 @@ class TuyaPlatform {
     this.log.info(
       `Register Platform Accessory ${platformAccessory.displayName}`,
     );
-    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [
-      platformAccessory,
-    ]);
+    this.api.registerPlatformAccessories(
+      settings.PLUGIN_NAME,
+      settings.PLATFORM_NAME,
+      [platformAccessory],
+    );
   }
 
   /**
@@ -404,15 +406,17 @@ class TuyaPlatform {
 
     this.log.info(`Remove Accessory ${accessory.displayName}`);
 
-    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [
-      accessory,
-    ]);
+    this.api.unregisterPlatformAccessories(
+      settings.PLUGIN_NAME,
+      settings.PLATFORM_NAME,
+      [accessory],
+    );
 
     this.accessories.delete(accessory.UUID);
     this.deviceAccessories.delete(accessory.UUID);
   }
 }
 
-module.exports = {
+export default {
   TuyaPlatform,
 };

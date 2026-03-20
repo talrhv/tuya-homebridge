@@ -7,9 +7,9 @@
  */
 
 const PLATFORM_NAME = "TuyaPlatform";
-const PLUGIN_NAME = "homebridge-tuya-platform-talrhvfork-test";
+const PLUGIN_NAME = "homebridge-tuya-platform-talrhvfork";
 
-module.exports = {
+export default {
   PLATFORM_NAME,
   PLUGIN_NAME,
 };

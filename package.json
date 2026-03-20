@@ -1,8 +1,9 @@
 {
   "name": "homebridge-tuya-platform-talrhvfork",
-  "version": "2.0.0-do_not_install",
+  "version": "2.0.22",
+  "type": "module",
   "description": "Official Homebridge plugin for Tuya Open API - talrhv fork, maintained by talrhv.",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
     "dev": "homebridge -D -U ./config/",
     "test": "node --test"
@@ -24,8 +25,9 @@
     "homebridge": "^1.6.0 || ^2.0.0-beta.0"
   },
   "dependencies": {
-    "axios": "^1.13.2",
-    "mqtt": "^5.11.0"
+    "axios": "^1.13.6",
+    "homebridge": "^1.11.2",
+    "mqtt": "^5.15.0"
   },
   "funding": {
     "type": "paypal",

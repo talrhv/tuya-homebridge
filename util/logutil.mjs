@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Thin wrapper around the Homebridge logger.
@@ -30,7 +30,7 @@ class LogUtil {
 
   debug(...args) {
     if (!this.isDebug) return;
-    if (typeof this.hbLog.debug === 'function') {
+    if (typeof this.hbLog.debug === "function") {
       this.hbLog.debug(...args);
     } else {
       this.hbLog.info(...args);
@@ -43,4 +43,4 @@ class LogUtil {
   }
 }
 
-module.exports = LogUtil;
+export default LogUtil;

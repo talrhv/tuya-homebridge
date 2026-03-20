@@ -3,3 +3,4 @@ config/accessories/
 config/persist/
 config/config.json
 config/config.json
+package-lock.json
