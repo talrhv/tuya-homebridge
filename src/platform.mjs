@@ -19,6 +19,7 @@ import LeakSensorAccessory from "../lib/leak_sensor_accessory.mjs";
 import PushAccessory from "../lib/push_accessory.mjs";
 import MotionSensorAccessory from "../lib/motionsensor_accessory.mjs";
 import ValveAccessory from "../lib/valve_accessory.mjs";
+import AlarmAccessory from "../lib/alarmhub_accessory.mjs";
 
 import LogUtil from "../util/logutil.mjs";
 import DataUtil from "../util/datautil.mjs";
@@ -186,6 +187,14 @@ class TuyaPlatform {
           homebridgeAccessory,
           device,
           new DataUtil().getSubService(device.status),
+        );
+        break;
+      case "mal":
+        deviceAccessory = new AlarmAccessory(
+          platform,
+          accessory,
+          device,
+          deviceConfig,
         );
         break;
       case "tdq":
