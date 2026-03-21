@@ -162,7 +162,6 @@ class TuyaPlatform {
 
     let deviceAccessory;
 
-    // Switch case לניהול סוגי מכשירים
     switch (deviceType) {
       case "kj":
         deviceAccessory = new AirPurifierAccessory(
@@ -204,6 +203,13 @@ class TuyaPlatform {
         break;
       case "ywbj":
         deviceAccessory = new SmokeSensorAccessory(
+          this,
+          homebridgeAccessory,
+          device,
+        );
+        break;
+      case "qn":
+        deviceAccessory = new HeaterAccessory(
           this,
           homebridgeAccessory,
           device,
@@ -276,7 +282,6 @@ class TuyaPlatform {
         return;
     }
 
-    // 4. רישום סופי במפות הפלטפורמה
     if (deviceAccessory?.homebridgeAccessory) {
       this.accessories.set(uuid, deviceAccessory.homebridgeAccessory);
       this.deviceAccessories.set(uuid, deviceAccessory);
