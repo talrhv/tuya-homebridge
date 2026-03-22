@@ -3,6 +3,7 @@
 import TuyaOpenAPI from "../lib/tuyaopenapi.mjs";
 import TuyaSHOpenAPI from "../lib/tuyashopenapi.mjs";
 import TuyaOpenMQ from "../lib/tuyamqttapi.mjs";
+import UdpScanner from "../lib/udp_scanner.mjs";
 
 // Accessories
 import OutletAccessory from "../lib/outlet_accessory.mjs";
@@ -30,12 +31,9 @@ class TuyaPlatform {
     this.api = api;
     this.config = config ?? {};
 
-    // הגדרת משתני PLUGIN ו-PLATFORM ישירות על ה-Instance
-    // זה יפתור את ה-Error: 'undefined' ב-BaseAccessory
     this.PLUGIN_NAME = settings.PLUGIN_NAME;
     this.PLATFORM_NAME = settings.PLATFORM_NAME;
 
-    // אתחול לוגר
     this.log = new LogUtil(log, Boolean(this.config?.options?.debug));
 
     if (!this.config?.options) {
@@ -50,9 +48,16 @@ class TuyaPlatform {
     this.accessories = new Map();
     this.deviceAccessories = new Map();
 
+    // --- אתחול צייד ה-IP האוטומטי ---
+    this.udpScanner = new UdpScanner(this.log);
+
     // Homebridge 2.0 Discovery
     api.on("didFinishLaunching", async () => {
       this.log.info("Initializing TuyaPlatform...");
+
+      // הפעלת ההאזנה ברשת המקומית מיד כשהפלאגין עולה
+      this.udpScanner.start();
+
       await this.initTuyaSDK(this.config);
     });
 
@@ -91,6 +96,8 @@ class TuyaPlatform {
           options.accessId,
           options.accessKey,
           this.log,
+          "en",
+          this.udpScanner, // <--- העברת הסורק פנימה כדי שה-API יכיר את הכתובות
         );
         this.tuyaOpenApi = api;
         await api.login(options.username, options.password);
@@ -104,6 +111,7 @@ class TuyaPlatform {
           options.countryCode,
           options.appSchema,
           this.log,
+          this.udpScanner,
         );
         this.tuyaOpenApi = api;
         devices = await api.getDevices();
@@ -191,10 +199,10 @@ class TuyaPlatform {
         break;
       case "mal":
         deviceAccessory = new AlarmAccessory(
-          platform,
-          accessory,
+          this,
+          homebridgeAccessory,
           device,
-          deviceConfig,
+          this.config, // הותאם לפרמטרים הסטנדרטיים של המחלקות שלך
         );
         break;
       case "tdq":

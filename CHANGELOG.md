@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.35] - 2026-03-20
+## [2.0.38] - 2026-03-21
 
 ### Added
 
@@ -8,4 +8,5 @@
 
 ### Changed
 
+- added an alarm hub accessory (experimental - I was unable to test it without having the accessory).
 - Complete code rewrite.

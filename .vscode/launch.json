@@ -6,7 +6,6 @@
       "request": "launch",
       "name": "Debug Homebridge",
       "skipFiles": ["<node_internals>/**"],
-      // זה הנתיב לקובץ ה-JS האמיתי ב-nvm4w
       "program": "C:/nvm4w/nodejs/node_modules/homebridge/bin/homebridge",
       "args": ["-D", "-P", ".", "-U", "./config"],
       "cwd": "${workspaceFolder}",
