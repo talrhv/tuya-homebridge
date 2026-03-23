@@ -2,7 +2,7 @@
   "pluginAlias": "TuyaPlatform",
   "pluginType": "platform",
   "singular": true,
-  "headerDisplay": "Official Tuya Homebridge plugin, supported by Tuya Developers.",
+  "headerDisplay": "Homebridge Tuya platorm. maintained by talrhv",
   "footerDisplay": "",
   "schema": {
     "type": "object",
