@@ -3,6 +3,7 @@
 import TuyaOpenAPI from "../lib/tuyaopenapi.mjs";
 import TuyaSHOpenAPI from "../lib/tuyashopenapi.mjs";
 import TuyaOpenMQ from "../lib/tuyamqttapi.mjs";
+import TuyaMatterBridge from "../lib/matter_support.mjs";
 
 // Accessories
 import OutletAccessory from "../lib/outlet_accessory.mjs";
@@ -29,12 +30,9 @@ class TuyaPlatform {
     this.api = api;
     this.config = config ?? {};
 
-    // הגדרת משתני PLUGIN ו-PLATFORM ישירות על ה-Instance
-    // זה יפתור את ה-Error: 'undefined' ב-BaseAccessory
     this.PLUGIN_NAME = settings.PLUGIN_NAME;
     this.PLATFORM_NAME = settings.PLATFORM_NAME;
 
-    // אתחול לוגר
     this.log = new LogUtil(log, Boolean(this.config?.options?.debug));
 
     if (!this.config?.options) {
@@ -46,10 +44,14 @@ class TuyaPlatform {
     }
 
     this.disabled = false;
+
+    // HAP caches
     this.accessories = new Map();
     this.deviceAccessories = new Map();
 
-    // Homebridge 2.0 Discovery
+    // Matter cache + logic
+    this.matterBridge = new TuyaMatterBridge(this);
+
     api.on("didFinishLaunching", async () => {
       this.log.info("Initializing TuyaPlatform...");
       await this.initTuyaSDK(this.config);
@@ -61,18 +63,31 @@ class TuyaPlatform {
   }
 
   /**
-   * Homebridge calls this to restore accessories from cache
+   * Homebridge calls this to restore HAP accessories from cache.
    */
   configureAccessory(accessory) {
     if (this.disabled) return;
+
     this.log.debug(`Restoring accessory from cache: ${accessory.displayName}`);
 
-    // רישום ה-Identify מחדש עבור אביזרים משוחזרים
     accessory.on("identify", () =>
       this.log.info(`${accessory.displayName} identify requested`),
     );
 
     this.accessories.set(accessory.UUID, accessory);
+  }
+
+  /**
+   * Homebridge calls this to restore Matter accessories from cache.
+   */
+  configureMatterAccessory(accessory) {
+    if (this.disabled) return;
+
+    this.log.debug(
+      `Restoring Matter accessory from cache: ${accessory.displayName}`,
+    );
+
+    this.matterBridge.restoreAccessory(accessory);
   }
 
   async initTuyaSDK(config) {
@@ -113,12 +128,17 @@ class TuyaPlatform {
       return;
     }
 
-    // הוספת אביזרים
     for (const device of devices) {
       this.addAccessory(device);
     }
 
-    // אתחול MQTT
+    try {
+      await this.matterBridge.registerDevices(devices);
+    } catch (e) {
+      this.log.error("Failed to register Matter accessories.");
+      this.log.error(e);
+    }
+
     try {
       const msgEncryptedVersion = projectType === "1" ? "2.0" : "1.0";
       const mq = new TuyaOpenMQ(api, msgEncryptedVersion, this.log);
@@ -127,6 +147,7 @@ class TuyaPlatform {
       mq.addMessageListener(this.onMQTTMessage.bind(this));
     } catch (e) {
       this.log.error("Failed to start Tuya MQTT.");
+      this.log.error(e);
     }
   }
 
@@ -137,7 +158,6 @@ class TuyaPlatform {
     const deviceId = device.id;
     const deviceName = device.name || "unnamed";
 
-    // 1. יצירת UUID ובדיקה האם המכשיר כבר קיים במפה הפנימית (מניעת Already Bridged)
     const uuid = this.api.hap.uuid.generate(deviceId);
     if (this.deviceAccessories.has(uuid)) {
       this.log.debug(
@@ -146,14 +166,12 @@ class TuyaPlatform {
       return;
     }
 
-    // 2. בדיקת רשימת התעלמות (Ignore List)
     const ignoreDevices = this.config?.options?.ignoreDevices ?? [];
     if (Array.isArray(ignoreDevices) && ignoreDevices.includes(deviceId)) {
       this.log.debug(`Ignoring device as per config: ${deviceName}`);
       return;
     }
 
-    // 3. שליפת אביזר מה-Cache של Homebridge (אם קיים)
     const homebridgeAccessory = this.accessories.get(uuid);
 
     this.log.info(
@@ -294,6 +312,15 @@ class TuyaPlatform {
     if (message.bizCode === "delete") {
       const uuid = this.api.hap.uuid.generate(message.devId);
       this.removeAccessory(this.accessories.get(uuid));
+
+      try {
+        await this.matterBridge.removeDevice(message.devId);
+      } catch (e) {
+        this.log.error(
+          `Failed to remove Matter accessory for ${message.devId}.`,
+        );
+        this.log.error(e);
+      }
       return;
     }
 
@@ -302,10 +329,18 @@ class TuyaPlatform {
     if (deviceAccessory) {
       deviceAccessory.updateState(message);
     }
+
+    try {
+      await this.matterBridge.syncMessage(message);
+    } catch (e) {
+      this.log.error(`Failed to sync Matter state for ${message.devId}.`);
+      this.log.error(e);
+    }
   }
 
   removeAccessory(accessory) {
     if (!accessory) return;
+
     this.log.info(`Removing accessory: ${accessory.displayName}`);
     this.api.unregisterPlatformAccessories(
       this.PLUGIN_NAME,
