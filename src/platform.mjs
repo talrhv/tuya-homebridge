@@ -54,6 +54,16 @@ class TuyaPlatform {
 
     api.on("didFinishLaunching", async () => {
       this.log.info("Initializing TuyaPlatform...");
+
+      try {
+        await this.matterBridge.bootstrapFromLocalCache();
+      } catch (e) {
+        this.log.warn(
+          "Failed to bootstrap Matter accessories from local cache.",
+        );
+        this.log.warn(e);
+      }
+
       await this.initTuyaSDK(this.config);
     });
 
